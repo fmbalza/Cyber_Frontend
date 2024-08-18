@@ -112,7 +112,7 @@ function Circulo() {
 
         </Sheet>
       </Modal>
-          <button  onClick={eliminarCirculo}>X</button>
+          <button className='terminar'  onClick={eliminarCirculo}>X</button>
         </>
       )}
     </div>
