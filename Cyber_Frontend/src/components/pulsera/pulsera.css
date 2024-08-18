@@ -3,7 +3,7 @@
     flex-wrap: wrap;
   }
   
-  .circulo {
+  .pulsera {
     width: 180px;
     height: 180px;
     border-radius: 50%;
@@ -16,7 +16,7 @@
     justify-content: center;
   }
 
-  .circuloC {
+  .pulseraC {
     width: 200px;
     height: 200px;
     border-radius: 50%;

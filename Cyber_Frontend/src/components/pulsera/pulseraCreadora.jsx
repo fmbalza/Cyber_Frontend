@@ -1,13 +1,13 @@
 
 import './pulsera.css'
 
-function CirculoCreador({ agregarCirculo }) {
+function PulseraCreadora({ agregarCirculo }) {
   return (
    
    
-      <button className="circuloC" onClick={agregarCirculo}>Crear otro círculo</button>
+      <button className="pulseraC" onClick={agregarCirculo}>Crear Pulsera</button>
    
   );
 }
 
-export default CirculoCreador;
+export default PulseraCreadora;

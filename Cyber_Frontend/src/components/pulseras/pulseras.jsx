@@ -1,22 +1,22 @@
 import { useState } from 'react';
-import Circulo from '../pulsera/pulsera'; // Importamos el componente Circulo
-import CirculoCreador from '../pulsera/pulseraCreadora';
+import Pulsera from '../pulsera/pulsera'; // Importamos el componente Circulo
+import PulseraCreadora from '../pulsera/pulseraCreadora';
 
 
 function Cuadro() {
-  const [circulos, setCirculos] = useState([{ id: 1 }]); // Estado para manejar los círculos
+  const [pulseras, setPulseras] = useState([{ id: 1 }]); // Estado para manejar los círculos
 
   const agregarCirculo = () => {
-    setCirculos([...circulos, { id: circulos.length + 1 }]);
+    setPulseras([...pulseras, { id: pulseras.length + 1 }]);
   };
 
   return (
     <div className="cuadro">
-      {circulos.map((circulo) => (
-        <Circulo key={circulo.id}  />
+      {pulseras.map((pulsera) => (
+        <Pulsera key={pulsera.id}  />
         
       ))}
-      <CirculoCreador agregarCirculo={agregarCirculo}/>
+      <PulseraCreadora agregarCirculo={agregarCirculo}/>
     </div>
   );
 }

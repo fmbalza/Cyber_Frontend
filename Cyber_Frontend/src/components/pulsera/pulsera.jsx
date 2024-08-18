@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './pulsera.css';
 import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
@@ -18,40 +18,76 @@ const rows = [
   createData(12341234, 'Javier'),
 ];
 
-function Circulo() {
+function Pulsera() {
 
   const [usuarioAsignado, setUsuarioAsignado] = useState(false);
   const [open, setOpen] = React.useState(false);
-
+  const [remainingTime, setRemainingTime] = useState(30 * 60); // Initial time in seconds (30 minutes)
+  const [isRunning, setIsRunning] = useState(false);
 
   const openModal = () => {
     setOpen(true)
   };
 
   const asignarUsuario = () => {
-    setUsuarioAsignado(true)
-    setOpen(false)
+    setUsuarioAsignado(true);
+    setOpen(false);
+    setRemainingTime(30 * 60); 
+    setIsRunning(true);
   };
 
   const desasignarUsuario =() => {
-    setUsuarioAsignado(false)
+    setUsuarioAsignado(false);
+    setIsRunning(false);
   }
 
-  const eliminarCirculo = () => {
-    const circuloElement = document.querySelector('.circulo');
-    circuloElement.parentNode.removeChild(circuloElement);
+  const eliminarpulsera = () => {
+    const pulseraElement = document.querySelector('.pulsera');
+    pulseraElement.parentNode.removeChild(pulseraElement);
     console.log('Círculo eliminado');
   };
 
+  const increaseTime = () => {
+    setRemainingTime(prevTime => prevTime + 30 * 60); // Increase by 1 minute, capped at 30 minutes
+  };
+
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (isRunning && remainingTime > 0) {
+        setRemainingTime(prevTime => prevTime - 1); // Decrement remaining time by 1 second
+      } else if (isRunning && remainingTime === 0) {
+        setIsRunning(false); // Stop the timer if it reaches 0
+        // Handle timer completion (e.g., alert or notification)
+      }
+    }, 1000);
+
+    return () => clearInterval(intervalId); // Clear interval on cleanup
+  }, [isRunning, remainingTime]);
+
+
+  const formatTime = (seconds) => {
+    const totalMinutes = Math.floor(seconds / 60);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    const secondss = seconds % 60;
+  
+    return `${hours > 0 ? hours + ':' : ''}${minutes.toString().padStart(2, '0')}:${secondss.toString().padStart(2, '0')}`;
+  };
+
+
   return (
-    <div className="circulo">
+    <div className="pulsera">
       {usuarioAsignado ? (
         <div>
           <p>Usuario Asignado</p>
-          <p>30:00</p>
+          {isRunning && ( // Only show timer if running)
+           
+          <p>{formatTime(remainingTime)}</p>
+          )}
 
           <button className='terminar' onClick={desasignarUsuario} >Terminar</button>
-          <button className='aumentar'>Aumentar</button>
+          <button className='aumentar' onClick={increaseTime}>Aumentar</button>
         </div>
       ) : (
         <>
@@ -112,11 +148,11 @@ function Circulo() {
 
         </Sheet>
       </Modal>
-          <button className='terminar'  onClick={eliminarCirculo}>X</button>
+          <button className='terminar'  onClick={eliminarpulsera}>X</button>
         </>
       )}
     </div>
   );
 }
 
-export default Circulo;
+export default Pulsera;
