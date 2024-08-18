@@ -1,0 +1,54 @@
+.cuadro {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .circulo {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 10px solid lightblue;
+    background-color: transparent;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .circuloC {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 10px solid lightblue;
+    background-color: transparent;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .row{
+    width: 100%;
+    display: flex;
+    border:3px solid #242424;
+    margin: 2px;
+    background-color: rgba(255, 255, 255, 0.87);
+    color: #242424;
+  }
+
+  .row td {
+  
+    flex-grow: 1; /* Allow 'user' td to expand to fill remaining space */
+    text-align: left; /* Align text within the td to the left */
+  }
+
+  .aumentar {
+    font-size: 10px;
+  }
+
+  .terminar {
+    font-size: 10px;
+    color: rgb(201, 0, 0);
+  }
