@@ -1,18 +1,14 @@
-
-
-import './App.css'
-import Cuadro from './components/pulseras/pulseras'
+import "./App.css";
+import Navbar from "./components/navbar/Navbar";
+import Cuadro from "./components/pulseras/pulseras";
 
 function App() {
-
-
   return (
     <>
-      <div>
-        <Cuadro/>
-      </div>
+      <Navbar />
+      <Cuadro />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
