@@ -14,9 +14,16 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import AddIcon from "@mui/icons-material/Add";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import { useState } from "react";
+import AssignmentsListModal from "../modals/AssignmentsListModal";
 
 const Navbar = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [openAssignmentsListModal, setOpenAssignmentsListModal] =
+    useState(false);
+
+  const handleOpenAssignmentsListModal = () => {
+    setOpenAssignmentsListModal(true);
+  };
 
   return (
     <>
@@ -58,6 +65,7 @@ const Navbar = () => {
             variant="solid"
             color="primary"
             endDecorator={<FormatListNumberedIcon />}
+            onClick={handleOpenAssignmentsListModal}
           >
             Ver listado de asignaciones
           </Button>
@@ -96,6 +104,11 @@ const Navbar = () => {
           </form>
         </ModalDialog>
       </Modal>
+
+      <AssignmentsListModal
+        open={openAssignmentsListModal}
+        setOpen={setOpenAssignmentsListModal}
+      />
     </>
   );
 };
