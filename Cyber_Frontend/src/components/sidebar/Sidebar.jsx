@@ -23,7 +23,7 @@ const Sidebar = () => {
         width={"95%"}
         height={"auto"}
         sx={{
-          backgroundColor: "#f4f7fb",
+          backgroundColor: "#c9d1ff",
           mt: 2,
           p: 1,
           borderRadius: 10,

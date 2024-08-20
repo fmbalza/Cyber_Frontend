@@ -5,6 +5,7 @@ import ModalClose from '@mui/joy/ModalClose';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
 import Table from '@mui/joy/Table';
+import { Button, Stack } from '@mui/joy';
 
 function createData(cedula, user) {
   return { cedula, user };
@@ -80,18 +81,21 @@ function Pulsera() {
     <div className="pulsera">
       {usuarioAsignado ? (
         <div>
-          <p>Usuario Asignado</p>
+          <Typography textAlign={"center"} sx={{ mb: 1 }}>Usuario Asignado</Typography>
           {isRunning && ( // Only show timer if running)
            
-          <p>{formatTime(remainingTime)}</p>
+           <Typography textAlign={"center"} sx={{ mb: 1 }}>{formatTime(remainingTime)}</Typography>
           )}
+        
+          <Button className='terminar' size='sm' onClick={desasignarUsuario} sx={{ m: 1 }}>Terminar</Button>
+          <Button className='aumentar' size='sm' onClick={increaseTime}>Aumentar</Button>
 
-          <button className='terminar' onClick={desasignarUsuario} >Terminar</button>
-          <button className='aumentar' onClick={increaseTime}>Aumentar</button>
         </div>
+
+        
       ) : (
         <>
-          <button onClick={openModal}>Asignar Usuario</button>
+          <button className='asignar' onClick={openModal}>Asignar Usuario</button>
           <Modal
         aria-labelledby="modal-title"
         aria-describedby="modal-desc"

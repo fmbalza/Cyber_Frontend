@@ -4,8 +4,8 @@
   }
   
   .pulsera {
-    width: 180px;
-    height: 180px;
+    width: 220px;
+    height: 220px;
     border-radius: 50%;
     border: 10px solid lightblue;
     background-color: transparent;
@@ -52,3 +52,5 @@
     font-size: 10px;
     color: rgb(201, 0, 0);
   }
+
+ 
