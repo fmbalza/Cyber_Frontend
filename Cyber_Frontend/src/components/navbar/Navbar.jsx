@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   DialogContent,
   DialogTitle,
@@ -18,6 +19,8 @@ import AssignmentsListModal from "../modals/AssignmentsListModal";
 import { useForm } from "react-hook-form";
 import { createClient } from "../../api/clients";
 import { useGlobalToast } from "../../store/useGlobalStore";
+import LogoutModal from "../modals/LogoutModal";
+import AttractionsIcon from "@mui/icons-material/Attractions";
 
 const Navbar = () => {
   const [username, setUsername] = useState("");
@@ -26,12 +29,17 @@ const Navbar = () => {
   const [openModal, setOpenModal] = useState(false);
   const [openAssignmentsListModal, setOpenAssignmentsListModal] =
     useState(false);
+  const [openLogoutModal, setOpenLogoutModal] = useState(false);
 
   const { handleSubmit } = useForm();
   const { openSnackbar } = useGlobalToast();
 
   const handleOpenAssignmentsListModal = () => {
     setOpenAssignmentsListModal(true);
+  };
+
+  const handleOpenLogoutModal = () => {
+    setOpenLogoutModal(true);
   };
 
   const submitHandler = async (data) => {
@@ -71,7 +79,12 @@ const Navbar = () => {
           padding: "0 16px", // Espaciado horizontal
         }}
       >
-        <div className="fontColor">Logo o Título</div>{" "}
+        <div className="fontColor">
+          <Box display={"flex"} justifyContent={"start"} mt={2}>
+            <AttractionsIcon fontSize="large" sx={{ mr: 1 }} />{" "}
+            <span className="logo">Adventures Park</span>
+          </Box>
+        </div>{" "}
         <Stack direction="row" spacing={1} sx={{ marginLeft: "auto", p: 2 }}>
           <Button
             className="fontColor"
@@ -97,6 +110,7 @@ const Navbar = () => {
             variant="solid"
             color="danger"
             endDecorator={<LogoutIcon />}
+            onClick={handleOpenLogoutModal}
           >
             Cerrar sesión
           </Button>
@@ -148,6 +162,8 @@ const Navbar = () => {
         open={openAssignmentsListModal}
         setOpen={setOpenAssignmentsListModal}
       />
+
+      <LogoutModal open={openLogoutModal} setOpen={setOpenLogoutModal} />
     </>
   );
 };

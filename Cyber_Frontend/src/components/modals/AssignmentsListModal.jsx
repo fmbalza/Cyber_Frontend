@@ -17,15 +17,23 @@ import {
   tableCellClasses,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
 } from "@mui/material";
+import { useState } from "react";
 
 const headCells = [
   {
-    label: "Usuario",
+    label: "Nombre de usuario",
   },
   {
     label: "# de pulsera",
+  },
+  {
+    label: "Tiempo",
+  },
+  {
+    label: "Fecha",
   },
 ];
 
@@ -44,6 +52,18 @@ const AssignmentsListTableHead = () => {
 };
 
 const AssignmentsListModal = ({ open, setOpen }) => {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const handleChangePage = (_event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
     <Modal open={open} onClose={() => setOpen(false)}>
       <ModalDialog variant="outlined" role="alertdialog">
@@ -69,6 +89,18 @@ const AssignmentsListModal = ({ open, setOpen }) => {
               </TableBody>
             </Table>
           </TableContainer>
+
+          <TablePagination
+            sx={{ mt: 2 }}
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={28} //data?.items
+            rowsPerPage={rowsPerPage}
+            page={page}
+            labelRowsPerPage="Asignaciones por página:"
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
         </DialogContent>
         <DialogActions>
           <Button variant="plain" color="danger" onClick={() => setOpen(false)}>
