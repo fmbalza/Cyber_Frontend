@@ -11,7 +11,7 @@ import {
   Stack,
 } from "@mui/joy";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-//import AddIcon from "@mui/icons-material/Add";
+import LogoutIcon from "@mui/icons-material/Logout";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import { useState } from "react";
 import AssignmentsListModal from "../modals/AssignmentsListModal";
@@ -82,14 +82,7 @@ const Navbar = () => {
           >
             Nuevo cliente
           </Button>
-          {/* <Button
-            className="fontColor"
-            variant="solid"
-            color="primary"
-            endDecorator={<AddIcon />}
-          >
-            Crear pulsera
-          </Button> */}
+
           <Button
             className="fontColor"
             variant="solid"
@@ -98,6 +91,14 @@ const Navbar = () => {
             onClick={handleOpenAssignmentsListModal}
           >
             Ver listado de asignaciones
+          </Button>
+          <Button
+            className="fontColor"
+            variant="solid"
+            color="danger"
+            endDecorator={<LogoutIcon />}
+          >
+            Cerrar sesión
           </Button>
         </Stack>
       </Stack>
