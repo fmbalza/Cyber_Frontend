@@ -16,7 +16,6 @@ const Sidebar = () => {
   const [openDeleteUserModal, setOpenDeleteUserModal] = useState(false);
 
   const { data, status, error } = useGetClientes();
-  console.log(data);
 
   const { openSnackbar } = useGlobalToast();
 

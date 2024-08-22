@@ -1,13 +1,21 @@
-import { getClientes, doAssignment, updateClient, deleteClient } from "../api/clients";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getClientes, doAssignment, updateClient, deleteClient, getAllAsignments } from "../api/clients";
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import { useGlobalToast } from "../store/useGlobalStore";
 
-export const useGetClientes = (page, rowsPerPage) => {
+export const useGetClientes = () => {
   return useQuery({
-    queryKey: ["clients", page, rowsPerPage],
-    queryFn: () => getClientes(page, rowsPerPage),
+    queryKey: ["clients"],
+    queryFn: () => getClientes(),
   });
 };
+
+export const useAllAsignments = (rowsPerPage, page) => {
+  return useQuery({
+    queryKey: ["assignments", rowsPerPage, page],
+    queryFn: () => getAllAsignments(rowsPerPage, page),
+    placeholderData: keepPreviousData,
+  })
+}
 
 export const useUpdateClientMutation = () => {
   return useMutation({

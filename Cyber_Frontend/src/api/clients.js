@@ -9,6 +9,15 @@ export const getClientes = async () => {
   }
 };
 
+export const getAllAsignments = async (rowsPerPage, page) => {
+  try {
+    const response = await api.get(`/assignment?limit=${rowsPerPage}&page=${page}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+}
+
 export const doAssignment = async (data) => {
   try {
     const response = await api.post("/assignment", data);
