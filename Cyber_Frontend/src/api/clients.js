@@ -9,7 +9,7 @@ export const getClientes = async (page = 1, rowsPerPage = 10) => {
   }
 };
 
-export const doAssignment = async () => {
+export const doAssignment = async (data) => {
   try {
     const response = await api.post("/assignment", data);
     return response.data.data;
@@ -26,3 +26,12 @@ export const createClient = async (data) => {
     throw new Error(error.response.data.message);
   }
 };
+
+export const updateClient = async (userID, data) => {
+  try {
+    const response = await api.put(`/user/${userID}`, data)
+    return response.data.message;
+  } catch (error) {
+    throw new Error(error.response.data.message)
+  }
+}

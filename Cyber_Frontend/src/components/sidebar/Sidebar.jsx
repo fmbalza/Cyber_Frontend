@@ -4,11 +4,14 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useMemo, useState } from "react";
 import EditUserModal from "../modals/EditUserModal";
 import DeleteUserModal from "../modals/DeleteUserModal";
-import { useGetClientes } from "../../hooks/users";
+import { useGetClientes } from "../../hooks/useClients";
 import { useGlobalToast } from "../../store/useGlobalStore";
 import { Skeleton } from "@mui/material";
 
 const Sidebar = () => {
+  const [selectedUserID, setSelectedUserID] = useState("");
+  const [selectedUsername, setSelectedUsername] = useState("");
+  const [selectedCardID, setSelectedCardID] = useState(null);
   const [openEditUserModal, setOpenEditUserModal] = useState(false);
   const [openDeleteUserModal, setOpenDeleteUserModal] = useState(false);
 
@@ -21,7 +24,10 @@ const Sidebar = () => {
     return data || [];
   }, [data]);
 
-  const handleOpenEditUserModal = () => {
+  const handleOpenEditUserModal = (userID, username, cardID) => {
+    setSelectedUserID(userID);
+    setSelectedUsername(username);
+    setSelectedCardID(cardID);
     setOpenEditUserModal(true);
   };
 
@@ -128,7 +134,13 @@ const Sidebar = () => {
               <IconButton
                 title="Editar usuario"
                 color="neutral"
-                onClick={handleOpenEditUserModal}
+                onClick={() =>
+                  handleOpenEditUserModal(
+                    client.user,
+                    client.username,
+                    client.id_card
+                  )
+                }
               >
                 <EditIcon />
               </IconButton>
@@ -147,26 +159,15 @@ const Sidebar = () => {
             Aún no hay ningún cliente guardado...
           </Typography>
         )}
-        {/* <Typography level="h4">Juan Romero</Typography>
-          <span>
-            <IconButton
-              title="Editar usuario"
-              color="neutral"
-              onClick={handleOpenEditUserModal}
-            >
-              <EditIcon />
-            </IconButton>
-            <IconButton
-              title="Eliminar usuario"
-              color="danger"
-              onClick={handleOpenDeleteUserModal}
-            >
-              <DeleteForeverIcon />
-            </IconButton>
-          </span> */}
       </Box>
 
-      <EditUserModal open={openEditUserModal} setOpen={setOpenEditUserModal} />
+      <EditUserModal
+        open={openEditUserModal}
+        setOpen={setOpenEditUserModal}
+        userID={selectedUserID}
+        username={selectedUsername}
+        cardID={selectedCardID}
+      />
 
       <DeleteUserModal
         open={openDeleteUserModal}

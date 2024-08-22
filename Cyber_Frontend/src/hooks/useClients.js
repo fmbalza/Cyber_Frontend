@@ -1,4 +1,4 @@
-import { getClientes, doAssignment } from "../api/clientes";
+import { getClientes, doAssignment, updateClient } from "../api/clients";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useGetClientes = (page, rowsPerPage) => {
@@ -7,6 +7,12 @@ export const useGetClientes = (page, rowsPerPage) => {
     queryFn: () => getClientes(page, rowsPerPage),
   });
 };
+
+export const useUpdateClientMutation = () => {
+  return useMutation({
+    mutationFn: (data) => updateClient(data.userID, data.data),
+  })
+}
 
 export const useDoAssignment = () => {
   const queryClient = useQueryClient();

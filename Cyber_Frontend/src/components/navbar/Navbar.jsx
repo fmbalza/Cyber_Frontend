@@ -16,7 +16,7 @@ import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import { useState } from "react";
 import AssignmentsListModal from "../modals/AssignmentsListModal";
 import { useForm } from "react-hook-form";
-import { createClient } from "../../api/clientes";
+import { createClient } from "../../api/clients";
 import { useGlobalToast } from "../../store/useGlobalStore";
 
 const Navbar = () => {
@@ -120,9 +120,9 @@ const Navbar = () => {
               <FormControl>
                 <FormLabel>Número de cédula</FormLabel>
                 <Input
-                  type="text"
                   autoFocus
                   required
+                  type="text"
                   value={cardID}
                   onChange={(e) => setCardID(e.target.value)}
                 />
