@@ -9,33 +9,47 @@ import { Button } from "@mui/joy";
 import { useGetClientes } from "../../hooks/useClients";
 import CircularProgress from "@mui/joy/CircularProgress";
 import { useDoAssignment } from "../../hooks/useClients";
+import { useGlobalToast } from "../../store/useGlobalStore";
 
 function createData(cedula, user) {
   return { cedula, user };
 }
 
-function Pulsera() {
+function Pulsera({ bracelet }) {
   const { isPending, isError, data, error } = useGetClientes();
   const [usuarioAsignado, setUsuarioAsignado] = useState(false);
+  const [usuario, setUsuario] = useState('');
   const [open, setOpen] = React.useState(false);
   const [remainingTime, setRemainingTime] = useState(30 * 60); // Initial time in seconds (30 minutes)
   const [isRunning, setIsRunning] = useState(false);
   const doAssignmentMutation = useDoAssignment();
+  const { openSnackbar } = useGlobalToast();
 
-  console.log("data:", data);
+
 
   const openModal = () => {
     setOpen(true);
   };
 
-  const asignarUsuario = async (user) => {
+  const asignarUsuario = async (cedula, user) => {
     try {
+      
       await doAssignmentMutation.mutate({
         time: 30,
-        user: user,
-        bracelet: 10,
-      }); // Use provided cedula and query data // Update state for visual change
+        id_card: cedula,
+        bracelet: bracelet,
+      })
+      console.log('Asignando usuario con cédula:', cedula);
+      console.log('Asignando usuario con usuario:', user); 
+      openSnackbar(
+        "Usuario asignado exitosamente",
+        "success",
+        "bottom",
+        "right"
+      );
+      setUsuario(user); // Use provided cedula and query data // Update state for visual change
     } catch (error) {
+      openSnackbar(`${error.message}`, "error", "top", "center");
       console.error("Error assigning patient:", error);
       // Handle error gracefully (e.g., display an error message)
     }
@@ -95,7 +109,7 @@ function Pulsera() {
       {usuarioAsignado ? (
         <div>
           <Typography textAlign={"center"} sx={{ mb: 1 }}>
-            Usuario Asignado
+            {usuario} 
           </Typography>
           {isRunning && ( // Only show timer if running)
             <Typography
@@ -170,10 +184,10 @@ function Pulsera() {
                 <tbody>
                   {rows.map((row) => (
                     <tr key={row.cedula}>
-                      <button className="row" onClick={asignarUsuario}>
+                      <Button color="neutral" variant="outlined" className="row" onClick={() => asignarUsuario(row.cedula, row.user)}>
                         <td>C.I: {row.cedula}</td>
                         <td>{row.user}</td>
-                      </button>
+                      </Button>
                     </tr>
                   ))}
                 </tbody>
