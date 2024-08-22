@@ -6,31 +6,46 @@ import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
 import Table from '@mui/joy/Table';
 import { Button, Stack } from '@mui/joy';
+import { useGetClientes } from '../../hooks/users';
+import CircularProgress from '@mui/joy/CircularProgress';
+import {Box} from '@mui/joy';
+import { useDoAssignment } from '../../hooks/users';
 
 function createData(cedula, user) {
+ 
+
   return { cedula, user };
 }
 
-const rows = [
-  createData(12341234, 'Jose'),
-  createData(12341234, 'Pedro'),
-  createData(12341234, 'Luis'),
-  createData(12341234, 'Juan'),
-  createData(12341234, 'Javier'),
-];
+
 
 function Pulsera() {
-
+  const { isPending, isError, data, error } = useGetClientes();
   const [usuarioAsignado, setUsuarioAsignado] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [remainingTime, setRemainingTime] = useState(30 * 60); // Initial time in seconds (30 minutes)
   const [isRunning, setIsRunning] = useState(false);
+  const doAssignmentMutation = useDoAssignment()
+  
+
+
+  console.log("data:",data)
 
   const openModal = () => {
     setOpen(true)
   };
 
-  const asignarUsuario = () => {
+  const asignarUsuario = async (user) => {
+    try {
+      await doAssignmentMutation.mutate({
+        time: 30,
+        user: user,
+        bracelet: 10
+      }); // Use provided cedula and query data // Update state for visual change
+    } catch (error) {
+      console.error("Error assigning patient:", error);
+      // Handle error gracefully (e.g., display an error message)
+    }
     setUsuarioAsignado(true);
     setOpen(false);
     setRemainingTime(30 * 60); 
@@ -76,6 +91,11 @@ function Pulsera() {
     return `${hours > 0 ? hours + ':' : ''}${minutes.toString().padStart(2, '0')}:${secondss.toString().padStart(2, '0')}`;
   };
 
+  const rows = isPending
+  ? [<CircularProgress />] // Mostrar un loader o mensaje mientras se cargan los datos
+  : error
+    ? [] // Mostrar un mensaje de error
+    : data.map(cliente => createData(cliente.id_card, cliente.username));;
 
   return (
     <div className="pulsera">
@@ -84,10 +104,10 @@ function Pulsera() {
           <Typography textAlign={"center"} sx={{ mb: 1 }}>Usuario Asignado</Typography>
           {isRunning && ( // Only show timer if running)
            
-           <Typography textAlign={"center"} sx={{ mb: 1 }}>{formatTime(remainingTime)}</Typography>
+           <Typography textAlign={"center"} sx={{ mb: 1, color:'#222222' }} level='h1' >{formatTime(remainingTime)}</Typography>
           )}
         
-          <Button className='terminar' size='sm' onClick={desasignarUsuario} sx={{ m: 1 }}>Terminar</Button>
+          <Button className='terminar' color='danger' variant='solid' size='sm' onClick={desasignarUsuario} sx={{ m: 1 }}>Terminar</Button>
           <Button className='aumentar' size='sm' onClick={increaseTime}>Aumentar</Button>
 
         </div>
@@ -95,7 +115,7 @@ function Pulsera() {
         
       ) : (
         <>
-          <button className='asignar' onClick={openModal}>Asignar Usuario</button>
+          <Button className='asignar' variant="outlined" onClick={openModal}>Asignar Usuario</Button>
           <Modal
         aria-labelledby="modal-title"
         aria-describedby="modal-desc"
@@ -152,7 +172,7 @@ function Pulsera() {
 
         </Sheet>
       </Modal>
-          <button className='terminar'  onClick={eliminarpulsera}>X</button>
+          <Button className='terminar' variant='plain' color="danger"  onClick={eliminarpulsera}>X</Button>
         </>
       )}
     </div>

@@ -1,18 +1,30 @@
 import { useState } from 'react';
 import Pulsera from '../pulsera/pulsera'; // Importamos el componente Circulo
 import PulseraCreadora from '../pulsera/pulseraCreadora';
-
+import { useGetPulseras, useCreatePulsera } from '../../hooks/pulseras';
+import { CircularProgress, Box } from '@mui/joy';
 
 function Cuadro() {
-  const [pulseras, setPulseras] = useState([{ id: 1 }]); // Estado para manejar los círculos
+  const getPulseras = useGetPulseras()
+  const createPulseras = useCreatePulsera()
+  const [pulseras, setPulseras] = useState([{ id: 1 }]); 
+  if(getPulseras.isPending){
+    return(
+      <Box>
+        <CircularProgress/>
+      </Box>
+    )
+  }
+
+  const pulseraData = getPulseras.data
 
   const agregarCirculo = () => {
-    setPulseras([...pulseras, { id: pulseras.length + 1 }]);
+    createPulseras.mutate()
   };
 
   return (
     <div className="cuadro">
-      {pulseras.map((pulsera) => (
+      {pulseraData.map((pulsera) => (
         <Pulsera key={pulsera.id}  />
         
       ))}
