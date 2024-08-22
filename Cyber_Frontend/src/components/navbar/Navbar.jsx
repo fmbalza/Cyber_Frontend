@@ -11,18 +11,48 @@ import {
   Stack,
 } from "@mui/joy";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-import AddIcon from "@mui/icons-material/Add";
+//import AddIcon from "@mui/icons-material/Add";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import { useState } from "react";
 import AssignmentsListModal from "../modals/AssignmentsListModal";
+import { useForm } from "react-hook-form";
+import { createClient } from "../../api/clientes";
+import { useGlobalToast } from "../../store/useGlobalStore";
 
 const Navbar = () => {
+  const [username, setUsername] = useState("");
+  const [cardID, setCardID] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [openAssignmentsListModal, setOpenAssignmentsListModal] =
     useState(false);
 
+  const { handleSubmit } = useForm();
+  const { openSnackbar } = useGlobalToast();
+
   const handleOpenAssignmentsListModal = () => {
     setOpenAssignmentsListModal(true);
+  };
+
+  const submitHandler = async (data) => {
+    try {
+      setIsLoading(true);
+      data.username = username;
+      data.id_card = parseInt(cardID);
+      await createClient(data);
+      setIsLoading(false);
+      setOpenModal(false);
+      openSnackbar(
+        "Cliente creado correctamente",
+        "success",
+        "bottom",
+        "right"
+      );
+    } catch (error) {
+      setIsLoading(false);
+      setOpenModal(true);
+      openSnackbar(error.message, "error", "top", "center");
+    }
   };
 
   return (
@@ -50,16 +80,16 @@ const Navbar = () => {
             endDecorator={<PersonAddAlt1Icon />}
             onClick={() => setOpenModal(true)}
           >
-            Crear usuario
+            Nuevo cliente
           </Button>
-          <Button
+          {/* <Button
             className="fontColor"
             variant="solid"
             color="primary"
             endDecorator={<AddIcon />}
           >
             Crear pulsera
-          </Button>
+          </Button> */}
           <Button
             className="fontColor"
             variant="solid"
@@ -80,26 +110,34 @@ const Navbar = () => {
       >
         <ModalDialog>
           <ModalClose variant="plain" sx={{ m: 1 }} />
-          <DialogTitle>Crear nuevo usuario</DialogTitle>
+          <DialogTitle>Nuevo cliente</DialogTitle>
           <DialogContent>
-            Llena la información correspondiente del nuevo usuario.
+            Llena la información correspondiente del nuevo cliente.
           </DialogContent>
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              setOpenModal(false);
-            }}
-          >
+          <form onSubmit={handleSubmit(submitHandler)}>
             <Stack spacing={2}>
               <FormControl>
                 <FormLabel>Número de cédula</FormLabel>
-                <Input type="text" autoFocus required />
+                <Input
+                  type="text"
+                  autoFocus
+                  required
+                  value={cardID}
+                  onChange={(e) => setCardID(e.target.value)}
+                />
               </FormControl>
               <FormControl>
-                <FormLabel>Nombre</FormLabel>
-                <Input type="text" required />
+                <FormLabel>Nombre de usuario</FormLabel>
+                <Input
+                  type="text"
+                  required
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
               </FormControl>
-              <Button type="submit">Crear</Button>
+              <Button type="submit" loading={isLoading}>
+                Crear
+              </Button>
             </Stack>
           </form>
         </ModalDialog>
