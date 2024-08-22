@@ -31,7 +31,9 @@ const Sidebar = () => {
     setOpenEditUserModal(true);
   };
 
-  const handleOpenDeleteUserModal = () => {
+  const handleOpenDeleteUserModal = (userID, username) => {
+    setSelectedUserID(userID);
+    setSelectedUsername(username);
     setOpenDeleteUserModal(true);
   };
 
@@ -147,7 +149,9 @@ const Sidebar = () => {
               <IconButton
                 title="Eliminar usuario"
                 color="danger"
-                onClick={handleOpenDeleteUserModal}
+                onClick={() =>
+                  handleOpenDeleteUserModal(client.user, client.username)
+                }
               >
                 <DeleteForeverIcon />
               </IconButton>
@@ -172,6 +176,8 @@ const Sidebar = () => {
       <DeleteUserModal
         open={openDeleteUserModal}
         setOpen={setOpenDeleteUserModal}
+        userID={selectedUserID}
+        username={selectedUsername}
       />
     </>
   );
